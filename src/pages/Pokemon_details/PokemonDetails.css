@@ -15,6 +15,14 @@
   }
 }
 
+/* Tablet (iPad) */
+@media (max-width: 1024px) {
+  .pokemon-img {
+    height: 300px;
+    width: 300px;
+  }
+}
+
 /* Normal css  */
 .pokemon-details {
   background-color: white;
