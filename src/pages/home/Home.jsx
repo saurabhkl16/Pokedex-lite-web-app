@@ -93,7 +93,7 @@ function Home() {
     <>
       <Navbar />
       <div className="main-content">
-        <div className="filters d-flex justify-content-center p-3">
+        <div className="filters p-3">
           <div className="search-bar me-5">
             <form className="d-flex" onSubmit={(e) => e.preventDefault()}>
               <input
@@ -161,7 +161,7 @@ function Home() {
           ))}
         </div>
 
-        <div aria-label="Pokemon pagination" className="pb-2">
+        <div aria-label="Pokemon pagination" className="pokemon-pagination p-2">
           <ul className="pagination justify-content-center my-4">
             <li className={`page-item ${offset === 0 ? "disabled" : ""}`}>
               <button

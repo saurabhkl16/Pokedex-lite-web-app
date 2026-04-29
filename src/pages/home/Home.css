@@ -1,7 +1,33 @@
+/* CSS for mobile view  */
+@media (max-width: 576px) {
+  .pokemon-list {
+    display: grid;
+    grid-template-columns: 1fr !important;
+    padding-inline: 10px;
+  }
+
+  input,
+  select {
+    width: 100px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .filters {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+/* Normal css  */
+
 .main-content {
-  background-color: rgb(205, 203, 203);
   min-height: 100%;
   padding-inline: 100px;
+}
+
+input {
+  min-width: 200px;
 }
 
 select {
@@ -41,4 +67,9 @@ select:hover {
 
 .badge {
   background-color: #ef5350;
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
 }
