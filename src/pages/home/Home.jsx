@@ -16,6 +16,7 @@ function Home() {
   const pageWindowSize = 5;
   const currentPage = Math.floor(offset / limit) + 1;
   const navigate = useNavigate();
+  const [favorites, setFavorites] = useState([]);
 
   let startPage = Math.max(1, currentPage - Math.floor(pageWindowSize / 2));
   let endPage = startPage + pageWindowSize - 1;
@@ -63,6 +64,24 @@ function Home() {
     fetchPokemon();
   }, [offset]);
 
+  useEffect(() => {
+    const storedFavs = JSON.parse(localStorage.getItem("favorites")) || [];
+    setFavorites(storedFavs);
+  }, []);
+
+  const toggleFavorite = (name) => {
+    let updatedFavs;
+
+    if (favorites.includes(name)) {
+      updatedFavs = favorites.filter((f) => f !== name);
+    } else {
+      updatedFavs = [...favorites, name];
+    }
+
+    setFavorites(updatedFavs);
+    localStorage.setItem("favorites", JSON.stringify(updatedFavs));
+  };
+
   if (loading) return <h2 className="text-center mt-5">Loading...</h2>;
 
   // Fix if exceeding total pages
@@ -106,7 +125,7 @@ function Home() {
           {filteredPokemon.map((p) => (
             <div key={p.id} className="">
               <div
-                className="pokemon-card card p-3 shadow-sm"
+                className="pokemon-card card p-3 shadow-sm position-relative"
                 onClick={() => navigate(`/pokemon/${p.name}`)}
               >
                 <img src={p.image} alt={p.name} height={100} width={100} />
@@ -121,6 +140,21 @@ function Home() {
                       </span>
                     ))}
                   </div>
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "10px",
+                      right: "10px",
+                      cursor: "pointer",
+                      fontSize: "20px",
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation(); // 🔥 IMPORTANT (prevents navigation)
+                      toggleFavorite(p.name);
+                    }}
+                  >
+                    {favorites.includes(p.name) ? "❤️" : "🤍"}
+                  </span>
                 </div>
               </div>
             </div>
