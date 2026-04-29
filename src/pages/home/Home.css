@@ -38,3 +38,7 @@ select:hover {
   transform: translateY(-5px);
   cursor: pointer;
 }
+
+.badge {
+  background-color: #ef5350;
+}

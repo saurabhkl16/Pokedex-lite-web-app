@@ -2,12 +2,23 @@ import "./Home.css";
 
 import Navbar from "../../components/navbar/Navbar";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [pokemonList, setPokemonList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [type, setType] = useState("");
+  const [offset, setOffset] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+  const limit = 20;
+  const totalPages = Math.ceil(totalCount / limit);
+  const pageWindowSize = 5;
+  const currentPage = Math.floor(offset / limit) + 1;
+  const navigate = useNavigate();
+
+  let startPage = Math.max(1, currentPage - Math.floor(pageWindowSize / 2));
+  let endPage = startPage + pageWindowSize - 1;
 
   // logic for filter:
   const filteredPokemon = pokemonList.filter((p) => {
@@ -19,8 +30,11 @@ function Home() {
   });
 
   const fetchPokemon = async () => {
+    setLoading(true);
     try {
-      const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=20");
+      const res = await fetch(
+        `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`,
+      );
       const data = await res.json();
 
       const detailedData = await Promise.all(
@@ -38,6 +52,7 @@ function Home() {
       );
 
       setPokemonList(detailedData);
+      setTotalCount(data.count);
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -46,14 +61,19 @@ function Home() {
 
   useEffect(() => {
     fetchPokemon();
-  }, []);
+  }, [offset]);
 
   if (loading) return <h2 className="text-center mt-5">Loading...</h2>;
 
+  // Fix if exceeding total pages
+  if (endPage > totalPages) {
+    endPage = totalPages;
+    startPage = Math.max(1, endPage - pageWindowSize + 1);
+  }
   return (
     <>
       <Navbar />
-      <div className="main-content pb-5">
+      <div className="main-content">
         <div className="filters d-flex justify-content-center p-3">
           <div className="search-bar me-5">
             <form className="d-flex" onSubmit={(e) => e.preventDefault()}>
@@ -64,7 +84,6 @@ function Home() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-              {/* <button className="btn btn-danger">Search</button> */}
             </form>
           </div>
 
@@ -77,16 +96,19 @@ function Home() {
               <option value="fire">Fire</option>
               <option value="water">Water</option>
               <option value="grass">Grass</option>
-              <option value="electric">Electric</option>
+              <option value="poison">Poison</option>
+              <option value="bug">Bug</option>
             </select>
           </div>
         </div>
 
         <div className="pokemon-list container">
-          {/* <div className="row"> */}
           {filteredPokemon.map((p) => (
             <div key={p.id} className="">
-              <div className="pokemon-card card p-3 shadow-sm">
+              <div
+                className="pokemon-card card p-3 shadow-sm"
+                onClick={() => navigate(`/pokemon/${p.name}`)}
+              >
                 <img src={p.image} alt={p.name} height={100} width={100} />
 
                 <div className="pokemon-body">
@@ -94,7 +116,7 @@ function Home() {
 
                   <div className="d-flex justify-content-center gap-2 mt-1">
                     {p.types.map((type) => (
-                      <span key={type} className="badge bg-danger">
+                      <span key={type} className="badge">
                         {type}
                       </span>
                     ))}
@@ -103,7 +125,81 @@ function Home() {
               </div>
             </div>
           ))}
-          {/* </div> */}
+        </div>
+
+        <div aria-label="Pokemon pagination" className="pb-2">
+          <ul className="pagination justify-content-center my-4">
+            <li className={`page-item ${offset === 0 ? "disabled" : ""}`}>
+              <button
+                className="page-link"
+                onClick={() => setOffset(offset - limit)}
+                disabled={offset === 0}
+              >
+                Previous
+              </button>
+            </li>
+
+            {startPage > 1 && (
+              <>
+                <li className="page-item">
+                  <button className="page-link" onClick={() => setOffset(0)}>
+                    1
+                  </button>
+                </li>
+                {startPage > 2 && (
+                  <li className="page-item disabled">
+                    <span className="page-link">...</span>
+                  </li>
+                )}
+              </>
+            )}
+
+            {Array.from(
+              { length: endPage - startPage + 1 },
+              (_, i) => startPage + i,
+            ).map((page) => (
+              <li
+                key={page}
+                className={`page-item ${currentPage === page ? "active" : ""}`}
+              >
+                <button
+                  className="page-link"
+                  onClick={() => setOffset((page - 1) * limit)}
+                >
+                  {page}
+                </button>
+              </li>
+            ))}
+
+            {endPage < totalPages && (
+              <>
+                {endPage < totalPages - 1 && (
+                  <li className="page-item disabled">
+                    <span className="page-link">...</span>
+                  </li>
+                )}
+                <li className="page-item">
+                  <button
+                    className="page-link"
+                    onClick={() => setOffset((totalPages - 1) * limit)}
+                  >
+                    {totalPages}
+                  </button>
+                </li>
+                <li
+                  className={`page-item ${offset + limit >= totalCount ? "disabled" : ""}`}
+                >
+                  <button
+                    className="page-link"
+                    onClick={() => setOffset(offset + limit)}
+                    disabled={offset + limit >= totalCount}
+                  >
+                    Next
+                  </button>
+                </li>
+              </>
+            )}
+          </ul>
         </div>
       </div>
     </>
