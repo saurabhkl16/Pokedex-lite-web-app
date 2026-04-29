@@ -24,15 +24,16 @@ function PokemonDetails() {
       <div className="pokemon-details">
         <Navbar />
         <div className="container mt-5 d-flex w-100">
-          <div className="left bg-secondary text-center w-50">
+          <div className="left bg-secondary text-center">
             <img
+            className="pokemon-img"
               src={pokemon.sprites.other["official-artwork"].front_default}
               alt={pokemon.name}
               width={500}
             />
             <h2 className="text-capitalize">{pokemon.name}</h2>
           </div>
-          <div className="right w-50">
+          <div className="right">
             <h4 className="mt-3">Types</h4>
             <div>
               {pokemon.types.map((t) => (

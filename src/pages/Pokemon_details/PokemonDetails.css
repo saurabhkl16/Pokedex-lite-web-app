@@ -1,15 +1,35 @@
+/* CSS for mobile view  */
+@media (max-width: 576px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .pokemon-img {
+    height: 300px;
+    width: 300px;
+  }
+
+  .left,
+  .right {
+    width: 100% !important ;
+  }
+}
+
+/* Normal css  */
 .pokemon-details {
   background-color: white;
-  height: 100vh;
+  height: 100%;
 }
 
 .left {
   border-radius: 6px;
   padding: 10px;
   color: white;
+  width: 50%;
 }
 
 .right {
   border-radius: 6px;
   padding: 20px;
+  width: 50%;
 }
