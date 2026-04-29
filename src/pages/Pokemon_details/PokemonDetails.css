@@ -1,0 +1,15 @@
+.pokemon-details {
+  background-color: white;
+  height: 100vh;
+}
+
+.left {
+  border-radius: 6px;
+  padding: 10px;
+  color: white;
+}
+
+.right {
+  border-radius: 6px;
+  padding: 20px;
+}

@@ -1,0 +1,44 @@
+.main-content {
+  background-color: rgb(205, 203, 203);
+  min-height: 100%;
+  padding-inline: 100px;
+}
+
+select {
+  padding: 10px;
+  border-radius: 6px;
+  min-width: 200px;
+}
+
+select:hover {
+  cursor: pointer;
+}
+
+.pokemon-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin: 10px;
+}
+
+.pokemon-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  color: black;
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.pokemon-card:hover {
+  transform: translateY(-5px);
+  cursor: pointer;
+}
+
+.badge {
+  background-color: #ef5350;
+}
