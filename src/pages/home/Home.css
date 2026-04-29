@@ -73,3 +73,10 @@ select:hover {
   display: flex;
   justify-content: center;
 }
+
+.pokemon-not-found {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
