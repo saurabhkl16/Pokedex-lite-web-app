@@ -1,5 +1,9 @@
 nav {
-    background-color: #ef5350;
-    color: white;
-    padding: 20px;
+  background-color: #ef5350;
+  color: white;
+  padding: 20px;
+}
+
+.link:hover {
+  color: black;
 }

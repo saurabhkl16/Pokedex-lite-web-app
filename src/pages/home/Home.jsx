@@ -133,7 +133,7 @@ function Home() {
               value={type}
               onChange={(e) => setType(e.target.value)}
             >
-              <option value="">Select Type</option>
+              <option value="">All</option>
 
               {types.map((t) => (
                 <option key={t.name} value={t.name}>
@@ -146,7 +146,7 @@ function Home() {
 
         {filteredPokemon.length === 0 ? (
           <div className="pokemon-not-found mt-5">
-            <h4>No Pokémon found 😔</h4>
+            <h4>No Pokemon found 😔</h4>
             <p>Try a different search or filter</p>
           </div>
         ) : (
